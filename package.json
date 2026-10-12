@@ -10,6 +10,6 @@
     "test": "./build/tests",
     "coverage": "./app/scripts/coverage.sh",
     "clean": "rm -rf build build-coverage",
-    "g": "./app/scripts/gen.sh g"
+    "g": "./app/scripts/cppf.sh g"
   }
 }

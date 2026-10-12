@@ -7,14 +7,14 @@
 #   npm run g cl utils/vector2 --dry-run
 #   npm run g c ui/menu --skip-tests  -> sans le fichier de test
 #
-# La configuration (types, suffixes, templates) est dans app/scripts/gen.json.
+# La configuration (types, suffixes, templates) est dans app/scripts/cppf.json.
 # Necessite jq (apt install jq / brew install jq).
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-CONFIG="$SCRIPT_DIR/gen.json"
+CONFIG="$SCRIPT_DIR/cppf.json"
 
 die() { echo "erreur : $*" >&2; exit 1; }
 
@@ -46,7 +46,7 @@ TYPE_ARG="${ARGS[1]}"
 PATH_ARG="${ARGS[2]}"
 
 command -v jq >/dev/null || die "jq n'est pas installe (apt install jq / brew install jq)"
-[ -f "$CONFIG" ] || die "gen.json introuvable dans app/scripts"
+[ -f "$CONFIG" ] || die "cppf.json introuvable dans app/scripts"
 
 TYPE=$(jq -r --arg t "$TYPE_ARG" '
     .schematics | to_entries[]
@@ -116,7 +116,7 @@ render() {
 mapfile -t EXTS < <(jq -r --arg t "$TYPE" --argjson skip "$SKIP_TESTS" '
     .schematics[$t].files | keys_unsorted[]
     | select($skip == 0 or ((startswith("spec") or startswith("test")) | not))' "$CONFIG")
-[ "${#EXTS[@]}" -gt 0 ] || die "aucun fichier defini pour le type '$TYPE' dans gen.json"
+[ "${#EXTS[@]}" -gt 0 ] || die "aucun fichier defini pour le type '$TYPE' dans cppf.json"
 
 for ext in "${EXTS[@]}"; do
     tpl="$TPL_DIR/$(jq -r --arg t "$TYPE" --arg e "$ext" '.schematics[$t].files[$e]' "$CONFIG")"
