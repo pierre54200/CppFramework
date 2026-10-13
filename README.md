@@ -1,5 +1,3 @@
 # CPP-Framework
 
-CPP-Framework est un framework personel du même type qu'Angular
-
-## Installation
+Le but de ce projet est de faire un environement de travail en c++ qui recompile automatiquement au runtime et avec une gestion de la conformité du code et des tests
